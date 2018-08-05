@@ -1,0 +1,48 @@
+package com.main;
+
+
+import java.util.Random;
+
+public class Spawn {
+    private Handler handler;
+    private  HUD hud;
+    private Game game;
+    private int scoreKeep = 0;
+    private Random r = new Random();
+
+    public Spawn(Handler handler, HUD hud , Game game){
+        this.handler = handler;
+        this.hud = hud;
+        this.game = game;
+    }
+
+    public void tick(){
+        scoreKeep++;
+        if (scoreKeep >= 100) {
+            scoreKeep = 0;
+            hud.setLevel(hud.getLevel() + 1);
+            
+            if(game.dif == 0) {
+                switch (hud.getLevel()) {
+                    case 2:
+                        handler.addObject(new BasicEnemy(r.nextInt(Game.WIDTH), r.nextInt(Game.HEIGHT), ID.BasicEnemy, handler));
+                        break;
+                    case 3:
+                        handler.addObject(new FastEnemy(r.nextInt(Game.WIDTH), r.nextInt(Game.HEIGHT), ID.FastEnemy, handler));
+                        break;
+                    case 4:
+                        handler.addObject(new SmartEnemy(r.nextInt(Game.WIDTH), r.nextInt(Game.HEIGHT), ID.SmartEnemy, handler));
+                        break;
+                    case 5:
+                        handler.addObject(new BossEnemy(Game.WIDTH / 2, 0, ID.BossEnemy, handler, hud));
+                        break;
+                    case 10:
+                        handler.clearEnemys();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+}
